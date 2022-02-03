@@ -1,5 +1,6 @@
 import classes
 import funcs
+import sys
 from datetime import datetime
 
 # main function
@@ -12,7 +13,7 @@ def main():
     continue_var = 'Y'
     student_arr = list()
     professor_arr = list()
-    courses_arr = list()
+    course_arr = list()
 
     # user interface for adding and showing students
     while continue_var == 'Y':
@@ -33,17 +34,15 @@ def main():
             except ValueError:
                 print('Int please..')
 
-        vladko = classes.Student('Vladimir','Ferko', 8, 'peniazkovy')
-        romanko = classes.Student('Roman','Fiut', 5, 'robkovy')
-        print(vladko)
-        print(romanko)
+        if user_choice == 7:
+            print('Goodbye')
+            sys.exit(0)
 
-        while True:
-            continue_var = input('Do you want to continue? [Y/n] ').upper()
-            if continue_var == 'Y' or continue_var == 'N':
-                break
+        student_arr.append(classes.Student('Vladimir','Ferko', 8, 'peniazkovy'))
+        student_arr.append(classes.Student('Roman','Fiut', 5, 'robkovy'))
 
-    print('Goodbye')
+        funcs.perform_actions(user_choice, student_arr, professor_arr, course_arr)
+
     conn.close()
             
 

@@ -14,7 +14,7 @@ class Student(Person):
         return f'Name: {self.name} \t Surname: {self.surname}\t Grade: {self.grade} \t Course: {self.course}'
 
 class Professor(Person):
-    def __init__(self, name: str, surname: str, course: str):
+    def __init__(self, name: str, surname: str, course: str, degree: str):
         super().__init__(name, surname)
         self.course = course
 
@@ -23,3 +23,6 @@ class Course():
         self.name = name
         self.specification = specification
         self.left_space = 5
+    
+    def __str__(self):
+        return f'Name: {self.name} \t Specification: {self.specification} \t Space left: {self.left_space}'
