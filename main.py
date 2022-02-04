@@ -11,7 +11,6 @@ def main():
 
     # vars
     continue_var = 'Y'
-    left_space = 0
 
     # user interface for adding and showing students
     while continue_var == 'Y':
