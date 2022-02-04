@@ -7,4 +7,11 @@ CREATE TABLE "Student" (
 	registered_date		TIMESTAMP		NULL
 );
 
+CREATE TABLE "Professor"(
+	professor_id		SERIAL			PRIMARY KEY,
+	professor_degree	VARCHAR(10)		NULL,
+	professor_name		VARCHAR(64)		NOT NULL,
+	professor_surname	VARCHAR(64)		NOT NULL
+);
+
 SELECT * FROM "Student"

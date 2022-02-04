@@ -11,9 +11,7 @@ def main():
 
     # vars
     continue_var = 'Y'
-    student_arr = list()
-    professor_arr = list()
-    course_arr = list()
+    left_space = 0
 
     # user interface for adding and showing students
     while continue_var == 'Y':

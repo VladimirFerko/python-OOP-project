@@ -1,3 +1,22 @@
+class School():
+    def __init__(self, name, adress):
+        self.name = name
+        self.adress = adress
+        self.students = list()
+        self.professors = list()
+        self.courses = list()
+    
+    # set methods for creating courses students and professors 
+
+    def set_course(self, course: list):
+        self.courses,append(course)
+
+    def set_professor(self, professor: list):
+        self.professors.append(professor)
+
+    def set_student(self, student: list):
+        self.students.append(student)
+
 
 class Person():
     def __init__(self, name: str, surname: str):
@@ -15,8 +34,12 @@ class Student(Person):
 
 class Professor(Person):
     def __init__(self, name: str, surname: str, course: str, degree: str):
+        self.degree = degree
         super().__init__(name, surname)
         self.course = course
+
+    def __str__(self):
+        return f'Name: {self.degree} {self.name} \t Surname: {self.surname} \t Course: {self.course}'
 
 class Course():
     def __init__(self, name: str, specification: str):

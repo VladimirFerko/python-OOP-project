@@ -31,13 +31,35 @@ def perform_actions(user_choice, student_arr, professor_arr, course_arr):
 
         del cour_name, cour_spec
 
-    # branch for printing out student
+    # branch for printing out students
     elif user_choice == 4:
         print('You have chosen the option number 4 - printing out the students')
-        for student in student_arr:
-            print(student)
+        if len(student_arr):
+            for student in student_arr:
+                print(student)
+        else:
+            print('There are no students assigned')
 
+    # branch for printing out professors
     elif user_choice == 5:
-        pass
+        
+        print('You have chosen the option number 5 - printing out the professors')
+        if len(professor_arr):
+            for professor in professor_arr:
+                print(professor)
+        else:
+            print('There are no professors assigned')
+
+    # branch for printing out curses
     elif user_choice == 6:
-        pass
+        
+        print('You have chosen the option number 6 - printing out the curses')
+        if len(course_arr):
+            for course in course_arr:
+                print(course)
+        else:
+            print('There are no courses assigned')
+
+
+
+#    print(course_arr[0].name)
