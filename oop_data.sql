@@ -1,17 +1,25 @@
-CREATE TABLE "Student" (
-	student_id 			SERIAL			PRIMARY KEY,
-	student_name		VARCHAR(64)		NOT NULL,
-	student_surname		VARCHAR(64)		NOT NULL,
-	grade				INT				NOT NULL,
-	id_course			INT				NULL,
-	registered_date		TIMESTAMP		NULL
+-- TABLE SCHOOLS IS ONE ITEM FROM ARRAY FOR SCHOOLS
+
+CREATE TABLE "Schools"(
+	school_id			INT				NOT NULL,
+	school_name 		VARCHAR(64)		NOT NULL,
+	school_adress		VARCHAR(64)		NOT NULL,
+	CONSTRAINT "school_id"	PRIMARY KEY  ("school_id")
 );
 
-CREATE TABLE "Professor"(
-	professor_id		SERIAL			PRIMARY KEY,
-	professor_degree	VARCHAR(10)		NULL,
-	professor_name		VARCHAR(64)		NOT NULL,
-	professor_surname	VARCHAR(64)		NOT NULL
+-- COURSES TABLE IS ONE ITEM FROM SCHOOL.COURSES LIST
+
+CREATE TABLE "Courses"(
+	id_course				SERIAL			NOT NULL,
+	course_name				VARCHAR(64)		NOT NULL,
+	course_specification	VARCHAR(64)		NOT NULL,
+	school_id				INT				NOT NULL,
+	CONSTRAINT school_fk	FOREIGN KEY	 (school_id) REFERENCES "Schools" (school_id)
 );
 
-SELECT * FROM "Student"
+INSERT INTO "Schools" (school_id, school_name, school_adress) VALUES (1 ,'elektrotechnicka', 'presov')
+INSERT INTO "Courses" (course_name, course_specification, school_id) VALUES ('coding', 'python', 1)
+
+SELECT * FROM "Schools"
+INNER JOIN "Courses"
+	ON "Schools".school_id = "Courses".school_id

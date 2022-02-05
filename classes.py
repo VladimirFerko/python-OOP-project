@@ -2,14 +2,14 @@ class School():
     def __init__(self, name, adress):
         self.name = name
         self.adress = adress
-        self.students = list()
-        self.professors = list()
-        self.courses = list()
+        self.students = list() # list of objects
+        self.professors = list() # list of objects
+        self.courses = list() # list of objects
     
     # set methods for creating courses students and professors 
 
     def set_course(self, course: list):
-        self.courses,append(course)
+        self.courses.append(course)
 
     def set_professor(self, professor: list):
         self.professors.append(professor)
