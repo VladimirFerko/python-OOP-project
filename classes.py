@@ -1,3 +1,5 @@
+import psycopg2
+
 class School():
     def __init__(self, name, adress):
         self.name = name
@@ -19,6 +21,18 @@ class School():
 
     def set_student(self, student: object):
         self.students.append(student)
+
+    @classmethod
+    def from_user(cls, name, adress, idx, conn):
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''
+                    INSERT INTO "Schools" (school_id, school_name, school_adress)
+                    VALUES ({idx}, N'{name}', N'{adress}');
+                '''
+                )
+
+        return cls(name, adress)
 
 
 class Person():

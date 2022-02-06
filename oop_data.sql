@@ -79,6 +79,8 @@ SELECT professor_degree, professor_name, professor_surname, course_name
             ON "Professors".id_course = "Courses".id_course
             WHERE "Professors".school_id = 1
 
+-- deleting data
+DELETE FROM "Schools"
 
 
 -- dropping all tables

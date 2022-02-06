@@ -81,4 +81,3 @@ def load_data(conn, school_objs):
     return school_objs 
 
 
-
