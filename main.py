@@ -14,9 +14,7 @@ def main():
     school_objs = funcs.load_data(conn, school_objs)
     print('Loaded succesfully')
 
-    print(school_objs[0].courses)
-    print(school_objs[1].courses)
-    
+    print(len(school_objs))
 
 if __name__ == '__main__':
     main()
