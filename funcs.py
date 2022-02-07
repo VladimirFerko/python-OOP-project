@@ -1,3 +1,4 @@
+from cgi import test
 from tempfile import tempdir
 import classes
 import os
@@ -102,3 +103,21 @@ def get_user_int(low, top):
 
     return user_opt
 
+# func for operating with school object
+
+def make_changes(school_objs, user_opt):
+    continue_var = 'Y'
+
+    while continue_var == 'Y':
+        print(f'Now You can modify the: {school_objs[user_opt - 1]}')    
+        print('''1 - add course
+2 - add professor
+3 - add student        
+        ''')
+
+        feature_opt = get_user_int(1, 3)
+
+        while True:
+            continue_var = input('Do you want to continue? [Y/n] ').upper()
+            if continue_var == 'Y' or continue_var == 'N':
+                break
