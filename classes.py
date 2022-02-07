@@ -66,3 +66,31 @@ class Course():
     
     def __str__(self):
         return f'Name: {self.name} \t Specification: {self.specification} \t Space left: {self.left_space}'
+
+    @classmethod
+    def from_user(cls, conn, user_opt):
+        # input vars
+        name = input('Whats the name of the course? ')
+        specification = input('What is the specification of this couse? ')
+
+        # writing into postgres
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    f'SELECT id_course from "Courses" WHERE school_id = {user_opt}'
+                )
+                idx = cur.fetchall()
+
+                if not len(idx):
+                    cur.execute(f'''
+                INSERT INTO "Courses" (id_course, course_name, course_specification, school_id, left_space)
+                VALUES (1, '{name}', '{specification}', '{user_opt}', 5); 
+            ''')
+                else:
+
+                    cur.execute(f'''
+                INSERT INTO "Courses" (id_course, course_name, course_specification, school_id, left_space)
+                VALUES ({idx[-1][0] + 1}, '{name}', '{specification}', {user_opt}, 5); 
+            ''')
+
+        return cls(name, specification)

@@ -105,7 +105,7 @@ def get_user_int(low, top):
 
 # func for operating with school object
 
-def make_changes(school_objs, user_opt):
+def make_changes(school_objs, user_opt, conn):
     continue_var = 'Y'
 
     while continue_var == 'Y':
@@ -117,7 +117,22 @@ def make_changes(school_objs, user_opt):
 
         feature_opt = get_user_int(1, 3)
 
+        # case user selected adding a course
+        if feature_opt == 1: 
+            school_objs[user_opt - 1].set_course(classes.Course.from_user(conn, user_opt))
+
+        # case user selected adding a professor 
+        if feature_opt == 2: 
+            pass
+
+        # case user selected adding a student 
+        if feature_opt == 3:
+            pass
+
+
         while True:
             continue_var = input('Do you want to continue? [Y/n] ').upper()
             if continue_var == 'Y' or continue_var == 'N':
                 break
+
+        return school_objs

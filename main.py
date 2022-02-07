@@ -40,15 +40,14 @@ def main(conn):
 
 
             # making changes in object
-            school_objs = funcs.make_changes(school_objs, user_opt)
-
+            school_objs = funcs.make_changes(school_objs, user_opt, conn)
 
         # case user just wants to quit
         elif user_opt == 3:
             sys.exit(0)
 
 
-#    print(school_objs)
+    print(school_objs[0].courses)
 
 
 
