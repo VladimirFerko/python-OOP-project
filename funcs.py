@@ -80,4 +80,25 @@ def load_data(conn, school_objs):
 
     return school_objs 
 
+# func for getting school info
+
+def get_school_vars():
+    name = input('What is the name of your school? ')
+    adress = input('What is the adress of your school? ')
+
+    return name, adress
+
+# func for getting int user input
+
+def get_user_int(low, top):
+
+    while True:
+        try:
+            user_opt = int(input('Which option would you like to choose? '))
+            if user_opt >= low and user_opt <= top:
+                break
+        except ValueError:
+            print('Int please..')
+
+    return user_opt
 
