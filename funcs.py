@@ -112,10 +112,13 @@ def make_changes(school_objs, user_opt, conn):
         print(f'Now You can modify the: {school_objs[user_opt - 1]}')    
         print('''1 - add course
 2 - add professor
-3 - add student        
+3 - add student   
+4 - show courses
+5 - show professors
+6 - show students     
         ''')
 
-        feature_opt = get_user_int(1, 3)
+        feature_opt = get_user_int(1, 6)
 
         # case user selected adding a course
         if feature_opt == 1: 
@@ -123,10 +126,61 @@ def make_changes(school_objs, user_opt, conn):
 
         # case user selected adding a professor 
         if feature_opt == 2: 
-            pass
 
+            if not len(school_objs[user_opt - 1].courses):
+                print('First you need to create a course to hire a professor')
+
+            # getting taken courses
+            with conn:
+                with conn.cursor() as cur:
+                    cur.execute(f'''SELECT course_name from "Professors" 
+                    INNER JOIN "Courses" ON "Professors".id_course = "Courses".id_course 
+                    WHERE "Professors".school_id = {user_opt}''')
+                    taken_courses = cur.fetchall()
+
+            # getting free courses
+
+            free_courses = list()
+
+            for item in school_objs[user_opt - 1].courses:
+                free_courses.append(item.name)
+
+            for item in taken_courses:
+                for course in free_courses:
+                    if item[0] == course:
+                        free_courses.remove(item[0])
+
+            print('There are all free courses left')
+            for index, course in enumerate(free_courses):
+                print(f'{index + 1} - {course}')
+            professor_course = get_user_int(1, len(free_courses))
+
+
+                        
+
+            
         # case user selected adding a student 
         if feature_opt == 3:
+            pass
+
+        # case user selected showing courses
+        if feature_opt == 4:
+            print('You have selected - show courses')
+            print(f'School - {school_objs[user_opt - 1]}')
+
+            if len(school_objs[user_opt - 1]. courses):
+                for item in school_objs[user_opt - 1].courses:
+                    print(item)
+
+            else:
+                print('There are no courses')
+
+        # case user selected showing professors
+        if feature_opt == 5:
+            pass
+
+        # case user selected showing students
+        if feature_opt == 6:
             pass
 
 
@@ -136,3 +190,4 @@ def make_changes(school_objs, user_opt, conn):
                 break
 
         return school_objs
+

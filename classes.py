@@ -65,7 +65,7 @@ class Course():
         self.left_space = 5
     
     def __str__(self):
-        return f'Name: {self.name} \t Specification: {self.specification} \t Space left: {self.left_space}'
+        return f'Name: {self.name} \t\t\t Specification: {self.specification} \t\t\t Space left: {self.left_space}'
 
     @classmethod
     def from_user(cls, conn, user_opt):

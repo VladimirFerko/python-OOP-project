@@ -44,15 +44,11 @@ def main(conn):
 
         # case user just wants to quit
         elif user_opt == 3:
+            conn.close()
             sys.exit(0)
-
-
-    print(school_objs[0].courses)
-
 
 
 if __name__ == '__main__':
     conn = funcs.make_conn()
     while True:
         main(conn)
-    conn.close()
