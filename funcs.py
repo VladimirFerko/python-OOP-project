@@ -130,32 +130,42 @@ def make_changes(school_objs, user_opt, conn):
             if not len(school_objs[user_opt - 1].courses):
                 print('First you need to create a course to hire a professor')
 
-            # getting taken courses
-            with conn:
-                with conn.cursor() as cur:
-                    cur.execute(f'''SELECT course_name from "Professors" 
-                    INNER JOIN "Courses" ON "Professors".id_course = "Courses".id_course 
-                    WHERE "Professors".school_id = {user_opt}''')
-                    taken_courses = cur.fetchall()
+            else:
 
-            # getting free courses
+                # getting taken courses
+                with conn:
+                    with conn.cursor() as cur:
+                        cur.execute(f'''SELECT course_name from "Professors" 
+                        INNER JOIN "Courses" ON "Professors".id_course = "Courses".id_course 
+                        WHERE "Professors".school_id = {user_opt}''')
+                        taken_courses = cur.fetchall()
 
-            free_courses = list()
+                # getting free courses
 
-            for item in school_objs[user_opt - 1].courses:
-                free_courses.append(item.name)
+                free_courses = list()
 
-            for item in taken_courses:
-                for course in free_courses:
-                    if item[0] == course:
-                        free_courses.remove(item[0])
+                for item in school_objs[user_opt - 1].courses:
+                    free_courses.append(item.name)
 
-            print('There are all free courses left')
-            for index, course in enumerate(free_courses):
-                print(f'{index + 1} - {course}')
-            professor_course = get_user_int(1, len(free_courses))
+                for item in taken_courses:
+                    for course in free_courses:
+                        if item[0] == course:
+                            free_courses.remove(item[0])
 
+                # creating professor feature   
 
+                if len(free_courses):
+                    print('There are all free courses')
+                    for index, course in enumerate(free_courses):
+                        print(f'{index + 1} - {course}')
+
+                    professor_course = get_user_int(1, len(free_courses))
+
+                    school_objs[user_opt - 1].set_professor(classes.Professor.from_user(conn, free_courses[professor_course - 1], len(school_objs[user_opt - 1].professors), user_opt))
+
+                # just in case, user dont have any course without professor
+                else:
+                    print('You dont have any free course for your professor')
                         
 
             
@@ -186,8 +196,8 @@ def make_changes(school_objs, user_opt, conn):
 
         while True:
             continue_var = input('Do you want to continue? [Y/n] ').upper()
-            if continue_var == 'Y' or continue_var == 'N':
-                break
-
-        return school_objs
+            if continue_var == 'Y':
+                make_changes(school_objs, user_opt, conn)
+            elif continue_var == 'N':
+                return school_objs
 

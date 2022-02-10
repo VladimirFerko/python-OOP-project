@@ -58,6 +58,66 @@ class Professor(Person):
     def __str__(self):
         return f'Name: {self.degree} {self.name} \t Surname: {self.surname} \t Course: {self.course}'
 
+    @classmethod
+    def from_user(cls, conn, course, prof_idx, user_opt):
+        while True:
+            # asking if the professor has degree
+            qt_degree = input('Does this teacher have a degree? [Y/n] ').upper()
+            if qt_degree == 'Y' or qt_degree == 'N':
+                break
+        
+        # asking for professor informations
+        if qt_degree == 'Y':
+            while True:
+                degree_var = input('Insert professors degree here: ')
+                if len(degree_var) < 6:
+                    break
+
+            name = input('Insert professors name here: ')
+            surname = input('Insert professors surname here: ')
+
+            # getting id of the certain course
+            with conn:
+                with conn.cursor() as cur:
+                    cur.execute(f'''
+                    SELECT id_course
+                    FROM "Courses"
+                    WHERE course_name = '{course}'
+                    ''')
+
+                    id_course = cur.fetchone()
+            
+                    # writing data into postgres
+
+                    cur.execute(f'''
+                    INSERT INTO "Professors" (id_professor, professor_degree, professor_name, professor_surname, id_course, school_id)
+                    VALUES ({prof_idx + 1}, '{degree_var}', '{name}', '{surname}',{id_course[0]}, {user_opt});
+                    ''')
+
+
+        else:
+            # professor info
+            name = input('Insert professors name here: ')
+            surname = input('Insert professors surname here: ')
+
+            # getting id of the certain course
+            with conn:
+                with conn.cursor() as cur:
+                    cur.execute(f'''
+                    SELECT id_course
+                    FROM "Courses"
+                    WHERE course_name = '{course}'
+                    ''')
+
+                    id_course = cur.fetchone()
+            
+                    # writing data into postgres
+
+                    cur.execute(f'''
+                    INSERT INTO "Professors" (id_professor, professor_degree, professor_name, professor_surname, id_course, school_id)
+                    VALUES ({prof_idx + 1}, NULL, '{name}', '{surname}',{id_course[0]}, {user_opt});
+                    ''')
+
 class Course():
     def __init__(self, name: str, specification: str):
         self.name = name
