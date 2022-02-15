@@ -171,8 +171,60 @@ def make_changes(school_objs, user_opt, conn):
             
         # case user selected adding a student 
         if feature_opt == 3:
-            pass
 
+            # getting free course informations
+            with conn:
+                with conn.cursor() as cur:
+                    cur.execute(f'''
+                    SELECT id_course, course_name, school_id
+                    FROM "Courses"
+                    WHERE school_id = {user_opt} AND left_space > 0
+                    ''')
+
+                    cours = cur.fetchall()
+
+                    # getting student info
+                    student_name = input('Whats the name of the student? ')
+                    student_surname = input('Whats the surname of the student? ')
+
+                    while True:
+                        try:
+                            student_grade = int(input('Whats the grade of the student? [1 - 5] '))
+                            if student_grade > 0 and student_grade < 6:
+                                break
+                        except ValueError:
+                            print('Int please..') 
+
+                    # asking for selecting 
+                    indexes = list()
+                    for index in range(len(cours)):
+                        print(f'{cours[index][0]} - {cours[index][1]}')
+                        indexes.append(cours[index][0])
+
+
+                    while True:
+                        try:
+                            student_cour = int(input('Which course would you like to choose? '))
+                            if student_cour in indexes:
+                                break
+                        except ValueError:
+                            print('Int please..')
+                        
+                    for item in cours:
+                        if item[0] == student_cour:
+                            student_course = item[1]
+                            break
+
+                    cur.execute(f'''
+                    INSERT INTO "Students" (student_id ,student_name, student_surname, student_grade, id_course, school_id)
+                    VALUES ({len(school_objs[user_opt - 1].students)}, '{student_name}', '{student_surname}', {student_grade}, {student_cour}, {user_opt})                    
+                    '''
+                    )
+
+            school_objs[user_opt - 1].students.append(classes.Student.from_user(student_name, student_surname, student_grade, student_course))
+        
+
+        
         # case user selected showing courses
         if feature_opt == 4:
             print('You have selected - show courses')

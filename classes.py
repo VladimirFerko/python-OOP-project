@@ -49,6 +49,13 @@ class Student(Person):
     def __str__(self):
         return f'Name: {self.name} \t Surname: {self.surname}\t Grade: {self.grade} \t Course: {self.course}'
 
+    @classmethod
+    def from_user(cls, name, surname, grade, course):
+        return cls(name, surname, grade, course)
+
+
+
+
 class Professor(Person):
     def __init__(self, degree: str, name: str, surname: str, course: str):
         self.degree = degree
