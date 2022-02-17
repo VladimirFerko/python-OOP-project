@@ -126,10 +126,10 @@ class Professor(Person):
                     ''')
 
 class Course():
-    def __init__(self, name: str, specification: str):
+    def __init__(self, name: str, specification: str, left_space: int):
         self.name = name
         self.specification = specification
-        self.left_space = 5
+        self.left_space = left_space
     
     def __str__(self):
         return f'Name: {self.name} \t\t\t Specification: {self.specification} \t\t\t Space left: {self.left_space}'
@@ -160,4 +160,7 @@ class Course():
                 VALUES ({idx[-1][0] + 1}, '{name}', '{specification}', {user_opt}, 5); 
             ''')
 
-        return cls(name, specification)
+        return cls(name, specification, 5)
+
+    def set_space(self):
+        self.left_space -= 1

@@ -45,7 +45,7 @@ def load_data(conn, school_objs):
             temp = cur.fetchall()
 
             for item in temp:
-                school_objs[index].set_course(classes.Course(item[0], item[1]))
+                school_objs[index].set_course(classes.Course(item[0], item[1], item[2]))
 
 
             # loading professor objects
@@ -179,6 +179,7 @@ def make_changes(school_objs, user_opt, conn):
                     SELECT id_course, course_name, school_id
                     FROM "Courses"
                     WHERE school_id = {user_opt} AND left_space > 0
+                    ORDER BY id_course ASC
                     ''')
 
                     cours = cur.fetchall()
@@ -200,8 +201,7 @@ def make_changes(school_objs, user_opt, conn):
                     for index in range(len(cours)):
                         print(f'{cours[index][0]} - {cours[index][1]}')
                         indexes.append(cours[index][0])
-
-
+                    
                     while True:
                         try:
                             student_cour = int(input('Which course would you like to choose? '))
@@ -217,20 +217,32 @@ def make_changes(school_objs, user_opt, conn):
 
                     cur.execute(f'''
                     INSERT INTO "Students" (student_id ,student_name, student_surname, student_grade, id_course, school_id)
-                    VALUES ({len(school_objs[user_opt - 1].students)}, '{student_name}', '{student_surname}', {student_grade}, {student_cour}, {user_opt})                    
+                    VALUES ({len(school_objs[user_opt - 1].students) + 1}, '{student_name}', '{student_surname}', {student_grade}, {student_cour}, {user_opt})                    
                     '''
                     )
 
-            school_objs[user_opt - 1].students.append(classes.Student.from_user(student_name, student_surname, student_grade, student_course))
-        
+                    cur.execute(f'''
+                    UPDATE "Courses"
+                    SET left_space = left_space - 1
+                    WHERE id_course = {student_cour}
+                    ''')
 
-        
+            school_objs[user_opt - 1].students.append(classes.Student.from_user(student_name, student_surname, student_grade, student_course))
+
+            
+            for index, item in enumerate(school_objs[user_opt - 1].courses):
+                if item.name == student_course:
+                    idx = index
+                    break
+
+            school_objs[user_opt - 1].courses[idx].set_space()
+
         # case user selected showing courses
         if feature_opt == 4:
             print('You have selected - show courses')
             print(f'School - {school_objs[user_opt - 1]}')
 
-            if len(school_objs[user_opt - 1]. courses):
+            if len(school_objs[user_opt - 1].courses):
                 for item in school_objs[user_opt - 1].courses:
                     print(item)
 
@@ -239,11 +251,27 @@ def make_changes(school_objs, user_opt, conn):
 
         # case user selected showing professors
         if feature_opt == 5:
-            pass
+            print('You have selected - show professors')
+            print(f'School - {school_objs[user_opt - 1]}')
+
+            if len(school_objs[user_opt - 1].professors):
+                for item in school_objs[user_opt - 1].professors:
+                    print(item)
+
+            else:
+                print('There are no professors')
 
         # case user selected showing students
         if feature_opt == 6:
-            pass
+            print('You have selected - show students')
+            print(f'School - {school_objs[user_opt - 1]}')
+
+            if len(school_objs[user_opt - 1].students):
+                for item in school_objs[user_opt - 1].students:
+                    print(item)
+
+            else:
+                print('There are no students')
 
 
         while True:
